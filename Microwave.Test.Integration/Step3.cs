@@ -40,6 +40,7 @@ namespace Microwave.Test.Integration
                 fakeDisplay,
                 fakeLight,
                 uutCookController);
+            uutCookController.UI = userInterface;
 
         }
 
@@ -82,7 +83,7 @@ namespace Microwave.Test.Integration
 
         }
         [Test]
-        public void OnTimerExpired_startCancelButtonPressed_CookingTmerExpired()
+        public void OnTimerExpired_startCancelButtonPressed_CookingTimerExpired()
         {
             //Arrange
             powerButton.Press();
@@ -99,10 +100,11 @@ namespace Microwave.Test.Integration
             //Arrange
             powerButton.Press();
             timeButton.Press();
-            //Act
             startCancelButton.Press();
+            //Act
+            fakeTimer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
             //Assert
-            fakeDisplay.Received(1).ShowTime(Arg.Any<int>(),Arg.Any<int>());
+            fakeDisplay.Received(2).ShowTime(Arg.Any<int>(),Arg.Any<int>());
 
         }
     }
