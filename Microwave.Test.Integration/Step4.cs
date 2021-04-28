@@ -33,7 +33,7 @@ namespace Microwave.Test.Integration
             fakeOutput = Substitute.For<IOutput>();
             uutDisplay = new Display(fakeOutput);
             uutLight = new Light(fakeOutput); 
-            cookController = new CookController(fakeTimer,uutDisplay,fakePowerTube);
+            cookController = new CookController(fakeTimer,uutDisplay,fakePowerTube,userInterface);
             userInterface = new UserInterface(powerButton,
                 timeButton,
                 cancelStartButton,
@@ -49,13 +49,13 @@ namespace Microwave.Test.Integration
         {
             //Arrange
             powerButton.Press();
-            
+
             //Act
+            //Sætter timeren til 1 min:
             timeButton.Press();
 
             //Assert
-            fakeOutput.Received(2).OutputLine(Arg.Any<string>());
-            
+            fakeOutput.Received().OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
         }
 
         [Test]
@@ -63,9 +63,11 @@ namespace Microwave.Test.Integration
         {
             //Arrange
             //Act
+            //Power trykkes på 2 gange(50W) så den burde give 100
+            powerButton.Press();
             powerButton.Press();
             //Assert
-            fakeOutput.Received(1).OutputLine(Arg.Any<string>());
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("100 W")));
 
         }
         [Test]
@@ -85,28 +87,81 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Clear()
+        public void OnCancelStartPressed_CookingState_DisplayReceivedClear()
         {
             //Arrange
-            //Act 
+            powerButton.Press();
+            timeButton.Press();
+            cancelStartButton.Press();
+            //Act
+            cancelStartButton.Press();
+
             //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str =>str.Contains("cleared")));
         }
 
         [Test]
-        void TurnOn()
+        public void OnDoorOpened_TurnOnLight()
         {
             //Arrange
+            //Act 
+            door.Open();
+            //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+        }
+
+        [Test]
+        public void OnDoorClosed_TurnOffLight()
+        {
+            //Arrange
+            door.Open();
+            //Act 
+            door.Close();
+            //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+        }
+
+
+        [Test]
+        public void OnStartCancelButtonPressed_ReadyState_TurnOnLight()
+        {
+            //Arrange
+            door.Open();
+            door.Close();
+            //Act 
+            cancelStartButton.Press();
+
+            //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+
+        }
+
+        [Test]
+        public void CookingIsDone_CookingState_TurnOffLight()
+        {
+            //Arrange
+            door.Open();
+            door.Close();
+
+            //Act 
+            //starter og venter på den er færdig, så light slukker
+            cancelStartButton.Press();
+
+            //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+        }
+
+        [Test]
+        public void OnStartCancelButtonPressed_CookingState_TurnOffLight()
+        {
+            //Arrange
+            door.Open();
+            door.Close();
             cancelStartButton.Press();
             //Act 
+            cancelStartButton.Press();
             //Assert
-        }
-
-        [Test]
-        void TurnOff()
-        {
-            //Arrange
-            //Act 
-            //Assert
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
     }
 }
