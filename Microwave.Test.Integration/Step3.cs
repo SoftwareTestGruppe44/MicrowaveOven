@@ -82,7 +82,7 @@ namespace Microwave.Test.Integration
 
         }
         [Test]
-        public void OnTimerExpired_startCancelButtonPressed_()
+        public void OnTimerExpired_startCancelButtonPressed_CookingTmerExpired()
         {
             //Arrange
             powerButton.Press();
