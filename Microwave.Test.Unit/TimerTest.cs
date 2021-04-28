@@ -21,7 +21,7 @@ namespace Microwave.Test.Unit
             ManualResetEvent pause = new ManualResetEvent(false);
 
             uut.TimerTick += (sender, args) => pause.Set();
-            uut.Start(2000);
+            uut.Start(2); //ERROR Was 2000 in time
 
             // wait for a tick, but no longer
             Assert.That(pause.WaitOne(1100));
@@ -33,7 +33,7 @@ namespace Microwave.Test.Unit
             ManualResetEvent pause = new ManualResetEvent(false);
 
             uut.TimerTick += (sender, args) => pause.Set();
-            uut.Start(2000);
+            uut.Start(2); //ERROR Was 2000 in time
 
             // wait shorter than a tick, shouldn't come
             Assert.That(!pause.WaitOne(900));
@@ -45,7 +45,7 @@ namespace Microwave.Test.Unit
             ManualResetEvent pause = new ManualResetEvent(false);
 
             uut.Expired += (sender, args) => pause.Set();
-            uut.Start(2000);
+            uut.Start(2); //ERROR Was 2000 in time
 
             // wait for expiration, but not much longer, should come
             Assert.That(pause.WaitOne(2100));
@@ -57,7 +57,7 @@ namespace Microwave.Test.Unit
             ManualResetEvent pause = new ManualResetEvent(false);
 
             uut.Expired += (sender, args) => pause.Set();
-            uut.Start(2000);
+            uut.Start(2); //ERROR Was 2000 in time
 
             // wait shorter than expiration, shouldn't come
             Assert.That(!pause.WaitOne(1900));
@@ -72,7 +72,7 @@ namespace Microwave.Test.Unit
             uut.Expired += (sender, args) => pause.Set();
             uut.TimerTick += (sender, args) => notifications++;
 
-            uut.Start(2000);
+            uut.Start(2); //ERROR was 2000 in time
 
             // wait longer than expiration
             Assert.That(pause.WaitOne(2100));
@@ -93,7 +93,7 @@ namespace Microwave.Test.Unit
 
             uut.TimerTick += (sender, args) => pause.Set();
 
-            uut.Start(2000);
+            uut.Start(2); //ERROR was 2000
             uut.Stop();
 
             Assert.That(!pause.WaitOne(1100));
@@ -106,7 +106,7 @@ namespace Microwave.Test.Unit
 
             uut.Expired += (sender, args) => pause.Set();
 
-            uut.Start(2000);
+            uut.Start(2); //ERROR was 2000
             uut.Stop();
 
             Assert.That(!pause.WaitOne(2100));
@@ -116,12 +116,12 @@ namespace Microwave.Test.Unit
         public void Stop_StartedOneTick_NoExpiredTriggered()
         {
             ManualResetEvent pause = new ManualResetEvent(false);
-            int notifications = 0;
+            //ERROR never used => int notifications = 0;
 
             uut.Expired += (sender, args) => pause.Set();
             uut.TimerTick += (sender, args) => uut.Stop();
 
-            uut.Start(2000);
+            uut.Start(2); //ERROR was 2000
 
             Assert.That(!pause.WaitOne(2100));
         }
@@ -140,12 +140,12 @@ namespace Microwave.Test.Unit
                 if (ticksGone >= ticks)
                     pause.Set();
             };
-            uut.Start(5000);
+            uut.Start(5); //ERROR Was 5000
 
             // wait for ticks, only a little longer
             pause.WaitOne(ticks * 1000 + 100);
 
-            Assert.That(uut.TimeRemaining, Is.EqualTo(5000-ticks*1000));
+            Assert.That(uut.TimeRemaining, Is.EqualTo(5-ticks));//ERROR was Is.EqualTo(5000-ticks*1000);
         }
     }
 }

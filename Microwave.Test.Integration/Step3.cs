@@ -45,7 +45,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void StartCooking_StartCancelButtonPressed_CookingStarts()
+        public void StartCancelButtonPressed_SetTimerState_TimerStats()
         {
             //Arrange
             powerButton.Press();
@@ -57,7 +57,7 @@ namespace Microwave.Test.Integration
 
         }
         [Test]
-        public void Stop_StartCancelButtonPressed_CookingStops()
+        public void StartCancelButtonPressed_CookingState_TimerStops()
         {
             //Arrange
             powerButton.Press();
@@ -70,7 +70,7 @@ namespace Microwave.Test.Integration
 
         }
         [Test]
-        public void Stop_DoorOpened_CookingStops()
+        public void DoorOpen_CookingState_TimerStops()
         {
             //Arrange
             powerButton.Press();
@@ -83,7 +83,7 @@ namespace Microwave.Test.Integration
 
         }
         [Test]
-        public void OnTimerExpired_startCancelButtonPressed_CookingTimerExpired()
+        public void OnTimerExpired_CookingState_PowerTubeTurnsOff()
         {
             //Arrange
             powerButton.Press();
@@ -95,7 +95,7 @@ namespace Microwave.Test.Integration
             fakePowerTube.Received(1).TurnOff();
         }
         [Test]
-        public void OnTimerTick_StartCancelButtonPressed_ShowsRemainingCookingTime()
+        public void OnTimerTick_CookingState_DisplaysRemainingCookingTime()
         {
             //Arrange
             powerButton.Press();
