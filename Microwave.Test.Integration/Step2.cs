@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
@@ -57,7 +58,7 @@ namespace Microwave.Test.Integration
             //Act
             uutTimeButton.Press();
             //Assert
-            fakeDisplay.Received(1).ShowTime(Arg.Any<int>(), Arg.Any<int>());
+            fakeDisplay.Received(1).ShowTime(Arg.Any<int>(), Arg.Is<int>(x => x == 0));
         }
     }
 }
