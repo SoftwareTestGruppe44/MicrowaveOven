@@ -98,5 +98,23 @@ namespace Microwave.Test.Integration
             
         }
 
+        [Test]
+        public void DoorOpen_WhileCookingTimerStops_TimeRemainingEqual55()
+        {
+            //arrange
+            powerButton.Press();
+            timeButton.Press();
+
+            //act
+            cancelStartButton.Press();
+            Thread.Sleep(5000);
+            door.Open();
+            Thread.Sleep(5000);
+
+            //assert
+            Assert.AreEqual(55, uutTimer.TimeRemaining);
+
+        }
+
     }
 }
