@@ -70,35 +70,6 @@ namespace Microwave.Test.Integration
             fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("100 W")));
 
         }
-        [Test]
-        public void OnCancelStartPressed_DisplayReceivedShowTime()
-        {
-            //!!!!!Virkede ikke inden fejl i timeren blev rettet!!!!!
-
-            //Arrange
-            powerButton.Press();
-            timeButton.Press();
-            //Act
-            cancelStartButton.Press();
-
-            //Assert
-            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
-
-        }
-
-        [Test]
-        public void OnCancelStartPressed_CookingState_DisplayReceivedClear()
-        {
-            //Arrange
-            powerButton.Press();
-            timeButton.Press();
-            cancelStartButton.Press();
-            //Act
-            cancelStartButton.Press();
-
-            //Assert
-            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str =>str.Contains("cleared")));
-        }
 
         [Test]
         public void OnDoorOpened_TurnOnLight()
