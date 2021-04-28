@@ -34,7 +34,7 @@ namespace Microwave.Test.Unit
         }
 
         //Herunder rettes igen til korrekte boundary værdier. 0 ændres til 49 (tættest på 50),
-        //og de nye øvre værdier vil være 700 og 750
+        //og de nye øvre værdier vil være 700 og 750, hvilke før var 100 og 150
         [TestCase(-5)]
         [TestCase(-1)]
         [TestCase(49)]
