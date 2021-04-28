@@ -1,4 +1,5 @@
-﻿using Microwave.Classes.Boundary;
+﻿using System;
+using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
@@ -80,19 +81,20 @@ namespace Microwave.Test.Integration
             fakeTimer.Received(1).Stop();
 
         }
-        //[Test]
-        //public void OnTimerExpired_startCancelButtonPressed_()
-        //{
-        //    //Arrange
-        //    powerButton.Press();
-        //    timeButton.Press();
-        //    //Act
-        //    startCancelButton.Press();
-        //    //Assert
-            
-        //}
         [Test]
-        public void OnTimerTick_StartCancelButtonPressed_ShowsRemaingCookingTime()
+        public void OnTimerExpired_startCancelButtonPressed_()
+        {
+            //Arrange
+            powerButton.Press();
+            timeButton.Press();
+            startCancelButton.Press();
+            //Act
+            fakeTimer.Expired += Raise.EventWith(this, EventArgs.Empty);
+            //Assert
+            fakePowerTube.Received(1).TurnOff();
+        }
+        [Test]
+        public void OnTimerTick_StartCancelButtonPressed_ShowsRemainingCookingTime()
         {
             //Arrange
             powerButton.Press();
