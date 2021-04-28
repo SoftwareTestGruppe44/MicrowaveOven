@@ -22,7 +22,7 @@ namespace Microwave.Test.Integration
         private PowerTube uutPowerTube;
         private StringWriter stringWriter;
 
-        private void clearStringWriter()
+        private void ClearStringWriter()
         {
             StringBuilder sb = stringWriter.GetStringBuilder();
             sb.Remove(0, sb.Length);
@@ -72,7 +72,7 @@ namespace Microwave.Test.Integration
             //Arrange
             string expected = "Light is turned off\r\n";
             myDoor.Open();
-            clearStringWriter();
+            ClearStringWriter();
             //Act 
             myDoor.Close();
             //Assert
@@ -98,7 +98,7 @@ namespace Microwave.Test.Integration
             //Arrange
             string expected = "Display shows: 01:00\r\n";
             myPowerButton.Press();
-            clearStringWriter();
+            ClearStringWriter();
             //Act
             myTimeButton.Press();
             //Assert
@@ -114,7 +114,7 @@ namespace Microwave.Test.Integration
             string expected = "Light is turned on\r\nPowerTube works with 50\r\n";
             myPowerButton.Press(); //power 50W
             myTimeButton.Press();
-            clearStringWriter();
+            ClearStringWriter();
             //Act
             myCancelStartButton.Press();
             //Assert
@@ -130,7 +130,7 @@ namespace Microwave.Test.Integration
             myPowerButton.Press();
             myTimeButton.Press();
             myCancelStartButton.Press();
-            clearStringWriter();
+            ClearStringWriter();
             //Act
             myDoor.Open();
             //Assert
@@ -146,7 +146,7 @@ namespace Microwave.Test.Integration
             myPowerButton.Press(); 
             myTimeButton.Press();
             myCancelStartButton.Press();
-            clearStringWriter();
+            ClearStringWriter();
             //Act
             myCancelStartButton.Press();
             //Assert
