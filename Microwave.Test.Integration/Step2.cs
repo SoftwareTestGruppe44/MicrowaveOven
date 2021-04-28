@@ -41,6 +41,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
+        [Category("Main Scenario")]
         public void Press_PowerButtonPress_UIReceivedOnPowerPressedEvent()
         {
             //Arrange
@@ -51,14 +52,83 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Press_TimeButtonPress_UIReceivedOnTimerPressedEvent()
+        [Category("Main Scenario")]
+        public void Press_PowerButtonPressedTwice_UIReceivedOnPowerPressedEvent()
+        {
+            //Arrange
+            uutPowerButton.Press();
+            //Act
+            uutPowerButton.Press();
+            //Assert
+            fakeDisplay.Received(2).ShowPower(Arg.Any<int>());
+        }
+
+        [Test]
+        [Category("Main Scenario")]
+        public void Press_TimeButtonPress_UIReceivedEvent()
         {
             //Arrange
             uutPowerButton.Press();
             //Act
             uutTimeButton.Press();
             //Assert
+            //Decided that the second parameter should be equal to zero because it always receives zero no matter what. 
             fakeDisplay.Received(1).ShowTime(Arg.Any<int>(), Arg.Is<int>(x => x == 0));
+        }
+
+        [Test]
+        [Category("Main Scenario")]
+        public void Press_TimeButtonPressedTwice_UIReceivedEvent()
+        {
+            //Arrange
+            uutPowerButton.Press();
+            uutTimeButton.Press();
+            //Act
+            uutTimeButton.Press();
+            //Assert
+            //Decided that the second parameter should be equal to zero because it always receives zero no matter what. 
+            fakeDisplay.Received(2).ShowTime(Arg.Any<int>(), Arg.Is<int>(x => x == 0));
+        }
+
+        [Test]
+        [Category("Main Scenario")]
+        public void Press_StartCancelButtonPress_UIReceivedEvent()
+        {
+            //Arrange
+            uutPowerButton.Press();
+            uutTimeButton.Press();
+            //Act
+            uutCancelStartButton.Press();
+            //Assert
+            //Asserting that both the cookController and Light received correct method calls.
+            fakeCookController.Received(1).StartCooking(Arg.Any<int>(), Arg.Any<int>());
+            fakeLight.Received(1).TurnOn();
+        }
+
+        [Test]
+        [Category("Extension 3")]
+        public void Press_StartCancelButtonPressWhileCooking_UIReceivedEvent()
+        {
+            //Arrange
+            uutPowerButton.Press();
+            uutTimeButton.Press();
+            uutCancelStartButton.Press();
+            //Act
+            uutCancelStartButton.Press();
+            //Assert
+            fakeDisplay.Received(1).Clear();
+        }
+
+        [Test]
+        [Category("Extension 1")]
+        public void Press_StartCancelButtonPressDuringSetup_UIReceivedEvent()
+        {
+            //Arrange
+            uutPowerButton.Press();
+            //Act
+            uutCancelStartButton.Press();
+            //Assert
+            fakeDisplay.Received(1).Clear();
         }
     }
 }
