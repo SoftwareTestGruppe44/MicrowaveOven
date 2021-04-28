@@ -19,20 +19,27 @@ namespace Microwave.Test.Unit
             uut = new PowerTube(output);
         }
 
-        [TestCase(1)]
+        //Herunder rettes til de korrekte værdier, som er større eller lig 50 og mindre end 700.
+        //Derved ændres tests
+        //[TestCase(1)]
+        //[TestCase(50)]
+        //[TestCase(100)]
         [TestCase(50)]
-        [TestCase(100)]
+        [TestCase(300)]
+        [TestCase(650)]
         public void TurnOn_WasOffCorrectPower_CorrectOutput(int power)
         {
             uut.TurnOn(power);
             output.Received().OutputLine(Arg.Is<string>(str => str.Contains($"{power}")));
         }
 
+        //Herunder rettes igen til korrekte boundary værdier. 0 ændres til 49 (tættest på 50),
+        //og de nye øvre værdier vil være 700 og 750
         [TestCase(-5)]
         [TestCase(-1)]
-        [TestCase(0)]
-        [TestCase(101)]
-        [TestCase(150)]
+        [TestCase(49)]
+        [TestCase(700)]
+        [TestCase(750)]
         public void TurnOn_WasOffOutOfRangePower_ThrowsException(int power)
         {
             Assert.Throws<System.ArgumentOutOfRangeException>(() => uut.TurnOn(power));

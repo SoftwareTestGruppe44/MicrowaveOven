@@ -1,8 +1,10 @@
-﻿using Microwave.Classes.Boundary;
+﻿using System.Threading;
+using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
+using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
@@ -40,18 +42,66 @@ namespace Microwave.Test.Integration
                 myDisplay,
                 myLight, 
                 myCookController);
+            myCookController.UI = userInterface;
         }
 
-        [Test]
-        public void TurnOn_StartCancelPressed_TurnOnIsCalled()
+        [TestCase(1, 50)]
+        [TestCase(2, 100)]
+        [TestCase(12, 600)]
+        [TestCase(13, 650)]
+        public void TurnOn_StartCancelPressedXTimes_OutputIsCalledWithCorrectValue(int numberOfButtonPress, int power)
         {
-            //Arrange
-             myPowerButton.Press();
+             //Arrange
+             for (int i = 0; i < numberOfButtonPress; i++)
+             {
+                myPowerButton.Press();
+             }
              myTimeButton.Press();
              //Act
              myCancelStartButton.Press();
              //Assert
-             fakeOutput.Received(1).OutputLine("");
+             fakeOutput.Received(1).OutputLine($"PowerTube works with {power}");
+        }
+
+        [Test]
+        public void TurnOff_StartCancelPressed_OutputIsCalledWithCorrectOutputAfter61Seconds()
+        {
+            //Arrange
+            myPowerButton.Press();
+            myTimeButton.Press();
+            //Act
+            myCancelStartButton.Press();
+            Thread.Sleep(61000);
+            //Assert
+            fakeOutput.Received(1).OutputLine("PowerTube turned off");
+        }
+
+        [Test]
+        public void TurnOff_StartCancelPressedDuringCooking_OutputCalledWithCorrectValue()
+        {
+            //Arrange
+            myPowerButton.Press();
+            myTimeButton.Press();
+            myCancelStartButton.Press();
+            //Act
+            myCancelStartButton.Press();
+            //Assert
+            fakeOutput.Received(1).OutputLine("PowerTube turned off");
+        }
+
+        [Test]
+        public void TurnOff_DoorOpenedDuringCooking_OutputCalledWithCorrectValue()
+        {
+            //Arrange
+            myPowerButton.Press();
+            myTimeButton.Press();
+            myCancelStartButton.Press();
+
+            //Act
+            myDoor.Open();
+
+            //Assert
+            fakeOutput.Received(1).OutputLine("PowerTube turned off");
         }
     }
 }

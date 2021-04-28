@@ -1,4 +1,6 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
+using System.Threading.Tasks;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
@@ -44,6 +46,7 @@ namespace Microwave.Test.Integration
                 display,
                 light,
                 cookController);
+            cookController.UI = userInterface;
         }
 
         [Test]
@@ -62,7 +65,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void timerExpired_InvokesEvent_timeremaingIsZero()
+        public void onTimeEvent_getCalled60Times_timeRemainingIsZero()
         {
             //arrange
             powerButton.Press();
@@ -74,7 +77,44 @@ namespace Microwave.Test.Integration
 
             //assert
             Assert.AreEqual(0,uutTimer.TimeRemaining,1);
+        }
+
+        [Test]
+        public void timerExpired_InvokesEvent_EventInvoked()
+        {
+            //arrange
+            var eventInvoked = new ManualResetEvent(false);
+
+            uutTimer.Expired += (sender, args) => eventInvoked.Set();
+
+            powerButton.Press();
+            timeButton.Press();
+
+            //act
+            cancelStartButton.Press();
+            
+            //assert
+            Assert.IsTrue(eventInvoked.WaitOne(61000));
+            
+        }
+
+        [Test]
+        public void DoorOpen_WhileCookingTimerStops_TimeRemainingEqual55()
+        {
+            //arrange
+            powerButton.Press();
+            timeButton.Press();
+
+            //act
+            cancelStartButton.Press();
+            Thread.Sleep(5000);
+            door.Open();
+            Thread.Sleep(5000);
+
+            //assert
+            Assert.AreEqual(55, uutTimer.TimeRemaining);
 
         }
+
     }
 }
