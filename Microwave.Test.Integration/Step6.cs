@@ -79,7 +79,29 @@ namespace Microwave.Test.Integration
         [Test]
         public void TurnOff_StartCancelPressedDuringCooking_OutputCalledWithCorrectValue()
         {
+            //Arrange
+            myPowerButton.Press();
+            myTimeButton.Press();
+            myCancelStartButton.Press();
+            //Act
+            myCancelStartButton.Press();
+            //Assert
+            fakeOutput.Received(1).OutputLine("PowerTube turned off");
+        }
 
+        [Test]
+        public void TurnOff_DoorOpenedDuringCooking_OutputCalledWithCorrectValue()
+        {
+            //Arrange
+            myPowerButton.Press();
+            myTimeButton.Press();
+            myCancelStartButton.Press();
+
+            //Act
+            myDoor.Open();
+
+            //Assert
+            fakeOutput.Received(1).OutputLine("PowerTube turned off");
         }
     }
 }
