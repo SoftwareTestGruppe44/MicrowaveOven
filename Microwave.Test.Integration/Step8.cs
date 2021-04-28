@@ -41,7 +41,5 @@ namespace Microwave.Test.Integration
                 myCookController);
         }
 
-        [Test]
-        public void
     }
 }
