@@ -82,7 +82,7 @@ namespace Microwave.Test.Integration
             cancelStartButton.Press();
 
             //Assert
-            fakeOutput.Received().OutputLine(Arg.Any<string>());
+            fakeOutput.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
 
         }
 
