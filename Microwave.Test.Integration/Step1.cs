@@ -1,3 +1,4 @@
+using System;
 using Microwave.Classes.Boundary;
 using Microwave.Classes.Controllers;
 using Microwave.Classes.Interfaces;
@@ -37,10 +38,10 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
+        [Category("Main Scenario")]
         public void Open_DoorOpensStateReady_lightOnReceivedOne()
         {
             //arrange
-
             //act
             uutDoor.Open();
             //assert
@@ -48,7 +49,8 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Open_DoorCloseWhenDoorOpen_lightOFReceivedOne()
+        [Category("Main Scenario")]
+        public void Open_DoorCloseWhenDoorOpen_lightOFFReceivedOne()
         {
             //arrange
             uutDoor.Open();
@@ -58,5 +60,43 @@ namespace Microwave.Test.Integration
             fakeLight.Received(1).TurnOff();
         }
 
+        [Test]
+        [Category("Extension 2")]
+        public void Open_DoorOpenDuringPowerSetup_displayIsCleared()
+        {
+            //Arrange
+            fakePowerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            uutDoor.Open();
+            //Assert
+            fakeDisplay.Received(1).Clear();
+        }
+
+        [Test]
+        [Category("Extension 2")]
+        public void Open_DoorOpenDuringTimerSetup_displayIsCleared()
+        {
+            //Arrange
+            fakePowerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            fakeTimeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            uutDoor.Open();
+            //Assert
+            fakeDisplay.Received(1).Clear();
+        }
+
+        [Test]
+        [Category("Extension 4")]
+        public void Open_DoorOpenDuringCooking_DisplayIsCleared()
+        {
+            //Arrange
+            fakePowerButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            fakeTimeButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            fakeCancelStartButton.Pressed += Raise.EventWith(this, EventArgs.Empty);
+            //Act
+            uutDoor.Open();
+            //Assert
+            fakeDisplay.Received(1).Clear();
+        }
     }
 }
