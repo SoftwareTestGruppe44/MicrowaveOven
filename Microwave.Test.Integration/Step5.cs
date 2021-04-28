@@ -95,7 +95,6 @@ namespace Microwave.Test.Integration
             
             //assert
             Assert.IsTrue(eventInvoked.WaitOne(61000));
-            
         }
 
         [Test]
@@ -113,8 +112,6 @@ namespace Microwave.Test.Integration
 
             //assert
             Assert.AreEqual(55, uutTimer.TimeRemaining);
-
         }
-
     }
 }
