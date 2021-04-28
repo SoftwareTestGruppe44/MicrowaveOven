@@ -41,7 +41,17 @@ namespace Microwave.Test.Integration
                 myLight, 
                 myCookController);
         }
-        [Test]
 
+        [Test]
+        public void TurnOn_StartCancelPressed_TurnOnIsCalled()
+        {
+            //Arrange
+             myPowerButton.Press();
+             myTimeButton.Press();
+             //Act
+             myCancelStartButton.Press();
+             //Assert
+             fakeOutput.Received(1).OutputLine("");
+        }
     }
 }
