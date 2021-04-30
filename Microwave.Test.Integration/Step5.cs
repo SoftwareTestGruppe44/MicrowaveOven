@@ -50,7 +50,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void Start_SetPowerAndSetTimeTo3Min_TimeIsSetCorrect()
+        public void start_setPowerandSetTimeTo3Min_TimeIsSetCorrect()
         {
             //arrange
             powerButton.Press();
@@ -65,7 +65,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void OnTimeEvent_GetCalled60Times_TimeRemainingIsZero()
+        public void onTimeEvent_getCalled60Times_timeRemainingIsZero()
         {
             //arrange
             powerButton.Press();
@@ -80,7 +80,7 @@ namespace Microwave.Test.Integration
         }
 
         [Test]
-        public void TimerExpired_InvokesEvent_EventInvoked()
+        public void timerExpired_InvokesEvent_EventInvoked()
         {
             //arrange
             var eventInvoked = new ManualResetEvent(false);
