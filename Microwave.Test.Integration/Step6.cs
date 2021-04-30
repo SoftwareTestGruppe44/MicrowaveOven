@@ -8,6 +8,7 @@ using Timer = Microwave.Classes.Boundary.Timer;
 
 namespace Microwave.Test.Integration
 {
+    [TestFixture]
     public class Step6
     {
         private Door myDoor;
@@ -42,13 +43,15 @@ namespace Microwave.Test.Integration
                 myDisplay,
                 myLight, 
                 myCookController);
+
             myCookController.UI = userInterface;
         }
 
         [TestCase(1, 50)]
         [TestCase(2, 100)]
         [TestCase(12, 600)]
-        [TestCase(13, 650)]
+        [TestCase(14, 700)]
+        [TestCase(15, 50)]
         public void TurnOn_StartCancelPressedXTimes_OutputIsCalledWithCorrectValue(int numberOfButtonPress, int power)
         {
              //Arrange
@@ -57,8 +60,10 @@ namespace Microwave.Test.Integration
                 myPowerButton.Press();
              }
              myTimeButton.Press();
+
              //Act
              myCancelStartButton.Press();
+
              //Assert
              fakeOutput.Received(1).OutputLine($"PowerTube works with {power}");
         }
@@ -69,9 +74,11 @@ namespace Microwave.Test.Integration
             //Arrange
             myPowerButton.Press();
             myTimeButton.Press();
+
             //Act
             myCancelStartButton.Press();
             Thread.Sleep(61000);
+
             //Assert
             fakeOutput.Received(1).OutputLine("PowerTube turned off");
         }
@@ -83,8 +90,10 @@ namespace Microwave.Test.Integration
             myPowerButton.Press();
             myTimeButton.Press();
             myCancelStartButton.Press();
+
             //Act
             myCancelStartButton.Press();
+
             //Assert
             fakeOutput.Received(1).OutputLine("PowerTube turned off");
         }
