@@ -24,6 +24,7 @@ namespace Microwave.Test.Integration
 
         private void ClearStringWriter()
         {
+            //Bruges til at rydde stringwriter.
             StringBuilder sb = stringWriter.GetStringBuilder();
             sb.Remove(0, sb.Length);
         }
@@ -49,9 +50,9 @@ namespace Microwave.Test.Integration
                 myLight,
                 myCookController);
 
+            //StringWriter der gør at vi kan få konsoludskrift over i en string.
             stringWriter = new StringWriter();
             System.Console.SetOut(stringWriter);
-
         }
 
         [Test]
@@ -153,6 +154,5 @@ namespace Microwave.Test.Integration
             string actual = stringWriter.ToString();
             Assert.AreEqual(expected, actual);
         }
-
     }
 }
